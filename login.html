@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | World Archive</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --bg-black: #0f0f0f;
+            --bg-card: #1e1e1e;
+            --accent: #3ea6ff;
+            --accent-hover: #65b8ff;
+            --text-main: #ffffff;
+            --text-dim: #aaaaaa;
+            --error: #ff4e4e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Efeito de fundo decorativo */
+        .bg-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            filter: blur(150px);
+            opacity: 0.1;
+            z-index: 0;
+            border-radius: 50%;
+        }
+
+        .login-container {
+            background: var(--bg-card);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            z-index: 1;
+            text-align: center;
+            border: 1px solid #2d2d2d;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        h2 { font-size: 20px; margin-bottom: 30px; font-weight: 400; color: var(--text-dim); }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-left: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            background: #121212;
+            border: 1px solid #333;
+            padding: 14px 15px;
+            color: #fff;
+            border-radius: 12px;
+            outline: none;
+            transition: 0.3s;
+            font-size: 15px;
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(62, 166, 255, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: var(--accent);
+            color: #000;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .footer-links {
+            margin-top: 25px;
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        .footer-links a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        #error-msg {
+            color: var(--error);
+            font-size: 13px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        /* Toast de Sucesso */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            background: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="login-container">
+        <div class="logo">WORLD ARCHIVE</div>
+        <h2>Acesse sua conta</h2>
+
+        <div id="error-msg">Usuário ou senha incorretos.</div>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <label>Nome de usuário ou E-mail</label>
+                <input type="text" id="username" placeholder="Seu usuário" required>
+            </div>
+
+            <div class="input-group">
+                <label>Senha</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+
+        <div class="footer-links">
+            Não tem uma conta? <a href="#">Criar conta agora</a>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Login realizado com sucesso!</div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            const toast = document.getElementById('toast');
+
+            // Lógica de simulação de login
+            // Em um sistema real, você enviaria isso para um banco de dados
+            if (user.length >= 3 && pass.length >= 4) {
+                
+                // SALVA O ESTADO DE LOGIN
+                localStorage.setItem('logged', 'true');
+                localStorage.setItem('username', user); // Salva o nome para o perfil
+                
+                errorMsg.style.display = 'none';
+                toast.style.display = 'block';
+
+                // Redireciona para o site principal após 1.5 segundos
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+
+            } else {
+                errorMsg.style.display = 'block';
+                errorMsg.innerText = "Por favor, preencha os dados corretamente.";
+            }
+        });
+
+        // Limpar erro ao digitar
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', () => {
+                document.getElementById('error-msg').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
